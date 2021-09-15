@@ -6,7 +6,6 @@ import requests.cookies
 from requests_toolbelt import MultipartEncoder
 from bs4 import BeautifulSoup
 from py3pin.BookmarkManager import BookmarkManager
-from py3pin.Registry import Registry
 from py3pin.RequestBuilder import RequestBuilder
 from requests.structures import CaseInsensitiveDict
 from selenium import webdriver
@@ -119,6 +118,7 @@ class Pinterest:
         email="",
         cred_root="data",
         user_agent=None,
+        cookies={}
     ):
         self.email = email
         self.username = username
@@ -129,11 +129,10 @@ class Pinterest:
         self.proxies = proxies
         self.user_agent = user_agent
 
-        self.registry = Registry(cred_root, email)
-
-        cookies = self.registry.get_all()
-        for key in cookies.keys():
-            self.http.cookies.set(key, cookies[key])
+        self.cookies = cookies
+        
+        for k, v in cookies.items():
+            self.http.cookies.set(k, v)
 
         if self.user_agent is None:
             self.user_agent = AGENT_STRING
@@ -221,7 +220,7 @@ class Pinterest:
             for cookie in cookies:
                 self.http.cookies.set(cookie["name"], cookie["value"])
 
-            self.registry.update_all(self.http.cookies.get_dict())
+            self.cookies = self.http.cookies.get_dict()
         except Exception as e:
             print("Failed to login", e)
 
