@@ -8,13 +8,7 @@ from bs4 import BeautifulSoup
 from py3pin.BookmarkManager import BookmarkManager
 from py3pin.RequestBuilder import RequestBuilder
 from requests.structures import CaseInsensitiveDict
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.proxy import Proxy, ProxyType
+
 
 AGENT_STRING = (
     "Mozilla/5.0 (Windows NT 6.1; Win64; x64) "
@@ -179,6 +173,14 @@ class Pinterest:
         Ideally you need to call this method 3-4 times a month at most.
         :return python dict object describing the pinterest response
         """
+        from selenium import webdriver
+        from selenium.webdriver.chrome.options import Options
+        from webdriver_manager.chrome import ChromeDriverManager
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.proxy import Proxy, ProxyType
+        
         chrome_options = Options()
         chrome_options.add_argument("--lang=%s" % lang)
         if headless:
